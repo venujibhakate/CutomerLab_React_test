@@ -1,70 +1,101 @@
-# Getting Started with Create React App
+# Save Segment Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React application that allows users to create and save customer segments with dynamic schema selection.
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+This application provides a simple interface to create customer segments by selecting various attributes like first name, last name, gender, age, account name, city, and state. The selected segment data is sent to a webhook for processing.
 
-### `npm start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This project consists of two parts: a React frontend and a Node.js backend server.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Frontend Setup
 
-### `npm test`
+```bash
+cd save-segment-poc
+npm install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend Setup
 
-### `npm run build`
+```bash
+cd cors-proxy
+npm install
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Running the Application
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+You need to run both the backend server and the frontend application.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Start the Backend Server
 
-### `npm run eject`
+Open a terminal and run:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+cd cors-proxy
+node server.js
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The server will start on http://localhost:5000
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Start the Frontend Application
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Open a new terminal window and run:
 
-## Learn More
+```bash
+cd save-segment-poc
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The application will open in your browser at http://localhost:3000
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## How to Use
 
-### Code Splitting
+1. Click the "Save segment" button on the main page
+2. Enter a name for your segment
+3. Select a schema from the "Add schema to segment" dropdown
+4. Click "+ Add new schema" to add it to your segment
+5. Repeat steps 3-4 to add more schemas
+6. You can change or remove schemas after adding them
+7. Click "Save the Segment" to send the data
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Available Schemas
 
-### Analyzing the Bundle Size
+- First Name
+- Last Name
+- Gender
+- Age
+- Account Name
+- City
+- State
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Data Format
 
-### Making a Progressive Web App
+The application sends data in the following format:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```json
+{
+  "segment_name": "your_segment_name",
+  "schema": [
+    {"first_name": "First Name"},
+    {"last_name": "Last Name"}
+  ]
+}
+```
 
-### Advanced Configuration
+## Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+To use your own webhook URL, edit the `cors-proxy/server.js` file and update the webhook URL in the fetch call.
 
-### Deployment
+## Technologies Used
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- React
+- Node.js
+- Express
+- CSS
 
-### `npm run build` fails to minify
+## Notes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- The backend server is required to handle CORS issues with webhook.site
+- Make sure both servers are running before using the application

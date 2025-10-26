@@ -5,7 +5,6 @@ export default function Modal({ onClose, allOptions }) {
   const [primary, setPrimary] = useState("");
   const [schemas, setSchemas] = useState([]);
 
-  
   const used = useMemo(() => schemas.map((s) => s.value), [schemas]);
 
   const availableForPrimary = allOptions.filter((o) => !used.includes(o.value));
@@ -33,14 +32,19 @@ export default function Modal({ onClose, allOptions }) {
   }
 
   async function handleSave() {
-    const schemaArr = schemas.map((s) => {
+    let finalSchemas = [...schemas];
+    if (primary) {
+      finalSchemas.push({ id: Date.now(), value: primary });
+    }
+
+    const schemaArr = finalSchemas.map((s) => {
       const opt = allOptions.find((o) => o.value === s.value);
       return { [s.value]: opt ? opt.label : s.value };
     });
 
     const data = {
       segment_name: segmentName || "untitled_segment",
-      schema: schemaArr,
+      schema: schemaArr
     };
 
     const WEBHOOK_URL = "http://localhost:5000/proxy";
@@ -52,10 +56,10 @@ export default function Modal({ onClose, allOptions }) {
         body: JSON.stringify(data),
       });
       if (res.ok) {
-        alert("Segment data sent successfully!");
+        alert("Segment saved successfully!");
         onClose();
       } else {
-        alert("Failed to send data");
+        alert("Failed to save segment");
       }
     } catch (err) {
       alert("Error: " + err.message);
